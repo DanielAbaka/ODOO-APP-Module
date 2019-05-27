@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<record id="olib_fleet.group_security" model="res.groups">
+      <field name="name">OLIB Fleet</field>
+    </record>
+</odoo>

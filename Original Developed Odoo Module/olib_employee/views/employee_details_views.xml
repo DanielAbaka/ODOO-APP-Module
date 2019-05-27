@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <odoo>
+    <record id="view_employee_details_tree" model="ir.ui.view">
+        <field name="name">employee.details.tree</field>
+        <field name="model">employee.details</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <tree string="Employee Details">
+                <field name="registration_id"/>
+                <field name="employee_lname"/>
+                <field name="employee_fname"/>
+                <field name="department"/>
+                <field name="position"/>
+                <field name="employee_email"/>
+                <field name="employee_number"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_employee_details_form" model="ir.ui.view">
+        <field name="name">employee.details.form</field>
+        <field name="model">employee.details</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="Employees Details">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            <img src='olib_fleet/static/description/icon.png' style="width:30%; float:right;"/>
+                        </button>
+                    </div>
+                    <field name="image" widget='image' class="oe_avatar"/>  
+                    <group col="2">
+                        <group string="Personal Information">
+                            <field name="registration_id"/>
+                            <field name="employee_lname"/>
+                            <field name="employee_fname"/>
+                            <field name="department"/>
+                        </group>
+                        <group string="Contacts">
+                           
+                            <field name="status"/>
+                            <field name="position"/>
+                            <field name="employee_email"/>
+                            <field name="employee_number"/>
+                        </group>
+                     </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="employee_template_kanban_view" model="ir.ui.view">
+        <field name="name">employee.details.kanban</field>
+        <field name="model">employee.details</field>
+        <field name="arch" type="xml">
+        <kanban>
+            <field name="image" modifiers="{}"/>
+            <field name="id"/>
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_global_click">
+                        <div class="o_kanban_image">
+                            <img t-att-src="kanban_image('employee.details', 'image', record.id.value)"/>
+                        </div>
+                        <div class="oe_kanban_details">
+                        <strong>
+                            <field name="employee_lname"/>
+                            <field name="employee_fname"/><br/>
+                            <span t-if="record.position.value"><field name="position"/></span>
+                            <ul>
+                                <li><field name="employee_email"/></li>
+                                <li><field name="employee_number"/></li>
+                            </ul>
+                        </strong>
+                        </div>
+                         <field name="registration_id"/>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+        </field>
+    </record>
+
+    <record id="search_all_employee" model="ir.ui.view">
+        <field name="name">Search</field>
+        <field name="model">employee.details</field>
+        <field name="arch" type="xml">
+        <search>
+            <field name="employee_fname" string="First Name" filter_domain="[('employee_fname','ilike', self)]"/>
+            <field name="employee_lname" string="Last Name" filter_domain="[('employee_lname','ilike', self)]"/>
+        </search>
+        </field>
+    </record> 
+
+    <record id="check_template_action" model="ir.actions.act_window">
+        <field name="name">Check Details</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">employee.details</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="employee_template_kanban_view"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new employee.
+            </p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_view_employee_details">
+        <field name="name">Employee Details</field>
+        <field name="res_model">employee.details</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create new employee now...
+            </p>
+        </field>
+    </record>
+    
+    <menuitem id="employee_details" 
+              name="WORKFORCE"
+              web_icon="olib_employee,static/description/logo.png"
+              sequence="2"
+              groups="olib_employee.group_security"
+              />
+
+    <menuitem id="details_employee"
+              name="Employee Details" 
+              parent="employee_details"
+              action="action_view_employee_details"
+              sequence="1"
+              groups="olib_employee.group_security"
+              />
+</odoo>

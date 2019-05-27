@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <odoo>
+    <record id="sequence_employee_leave_request" model="ir.sequence">
+        <field name="name">Employee Leave Request Number</field>
+        <field name="code">leave.request</field>
+        <field eval="4" name="padding" />
+        <field name="prefix">OLIBLR</field>
+    </record>
+
+    <record id="view_manager_form" model="ir.ui.view">
+        <field name="name">manager.validate.leave.form</field>
+        <field name="model">manager.validate.leave</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="Manager Approval">
+                <group> 
+                    <field name="opinion"/>
+                    <field name="approved_date"/>
+                    <group>
+                        <field name="replacement_name"/>
+                        <field name="replacement_number"/>
+                    </group>
+                    <group>
+                        <field name="human_resource_name"/>
+                        <field name="human_resource_number"/>
+                    </group>
+                        <field name="comment" placeholder="Manager Comment Section...."/>
+                </group>
+                <footer>
+                    <button name="button_send" type="object" class="oe_highlight" string="Approve Now"/>
+                    <button special="cancel" class="oe_highlight" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_approve_form" model="ir.ui.view">
+        <field name="name">hr.approve.leave.form</field>
+        <field name="model">hr.approve.leave</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="HR Approved">
+                <group>
+                <group>
+                    <field name="previous_leave"/>
+                    <field name="current_leave_deduction"/>
+                    <field name="remaining_leave_balc"/>
+                    <field name="hr_opinion"/>
+                </group>
+                <group>
+                    <field name="prev_sick_leave_bal"/>
+                    <field name="prev_sick_leave_dedu"/>
+                    <field name="remaining_sick_leave_balc"/>
+                    <field name="date"/>
+                </group>
+                <field name="hr_comment" placeholder="Human Resource Manager Comment Section...."/>
+            </group>
+                <footer>
+                    <button name="button_aprove" type="object" class="oe_highlight" string="Approve Now"/>
+                    <button special="cancel" class="oe_highlight" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_returned_form" model="ir.ui.view">
+        <field name="name">return.request.leave.form</field>
+        <field name="model">return.request.leave</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="Reject Request">
+                <group>
+                    <field name="reject_opinion"/>
+                    <field name="reject_date"/>
+                    <field name="reject_reason"/>
+                </group>
+                <footer>
+                    <button name="button_return" type="object" class="oe_highlight" string="Reject Now"/>
+                    <button special="cancel" class="oe_highlight" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="view_manager_action">
+        <field name="name">Manager Validate Employee Leave Request Section</field>
+        <field name="res_model">manager.validate.leave</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="domain">[]</field>
+        <field name="context">{'request_id': active_id}</field>
+        <field name="target">new</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="view_hr_approve_action">
+        <field name="name">HR(Human Resource) Employee Leave Approval Section</field>
+        <field name="res_model">hr.approve.leave</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="domain">[]</field>
+        <field name="context">{'request_id': active_id}</field>
+        <field name="target">new</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="view_returned_action">
+        <field name="name">Reject Employee Leave Request Section</field>
+        <field name="res_model">return.request.leave</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="domain">[]</field>
+        <field name="context">{'request_id': active_id}</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_employee_leave_request_tree" model="ir.ui.view">
+        <field name="name">leave.request.tree</field>
+        <field name="model">leave.request</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <tree string="Leave Request" decoration-danger="state=='reject'" decoration-success="state=='accepted'" >
+                <field name="name"/>
+                <field name="emp_name"/>
+                <field name="emp_id"/>
+                <field name="emp_number"/>
+                <field name="emp_department"/>
+               <!--  <field name="emp_status"/> -->
+                <field name="num_days_used"/>
+                <field name="date_requested"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_employee_leave_request_form" model="ir.ui.view">
+        <field name="name">leave.request.form</field>
+        <field name="model">leave.request</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="Leave Request">
+                <header>
+                    <button name="button_submit" type="object" states='new' class="oe_highlight" string="Submit"/>
+
+                    <button name="%(view_manager_action)d" type="action" states='manager' class="oe_highlight" string="Validate"/>
+
+                    <button name="%(view_returned_action)d" type="action" states='manager' class="oe_highlight" string="Reject"/>
+
+                    <button name="%(view_hr_approve_action)d" type="action" states='hr' class="oe_highlight" string="Validate"/>
+
+                    <button name="%(view_returned_action)d" type="action" states='hr' class="oe_highlight" string="Reject"/>
+
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div  class="oe_button_box" name="button_box">
+                        <button name="print_leave_request" string="Print" type="object" icon="fa-print" attrs="{'invisible': [('hr_comment','=',False)]}" />
+
+                        <img src='olib_request/static/description/icon.png' style="width:10%; float:right; "/>
+
+                    </div>
+                     <h1>
+                        <field name="name" readonly="1"/>
+                    </h1>
+                    <group string="Absence/Leave Request Application Form">
+                        <group>
+                            <field name="emp_name" options="{'no_create': True}"/>
+                            <field name="emp_id"/>
+                            <field name="emp_number"/>
+                            <field name="emp_department"/>
+                            <!-- <field name="emp_status"/> -->
+                            <field name="num_days_used"/>
+                            <field name="date_requested"/>
+                        </group>
+                        <group>
+                            <field name="manager_name" options="{'no_create': True}"/>
+                            <field name="manager_id"/>
+                            <field name="manager_number"/>
+                            <field name="leave_type" options="{'no_create': True}"/>
+                            <field name="depature_date"/>
+                            <field name="return_date"/>
+                            <field name="total_number_of_days"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="emp_comment" placeholder="Please state your leave absence reason here......................."/>
+                    </group>
+                    <group>
+                        <group string="Manager Approval" attrs="{'invisible': [('comment','=',False)]}">
+                            <field name="opinion"/>
+                            <field name="approved_date"/>
+                            <field name="replacement_name"/>
+                            <field name="replacement_number"/>
+                            <field name="human_resource_name" options="{'no_create': True}"/>
+                            <field name="human_resource_number"/>
+                            <field name="comment"/>
+                        </group>
+                        <group string="Human Resource Approval" attrs="{'invisible': [('hr_comment','=',False)]}">
+                            <field name="hr_opinion"/>
+                            <field name="previous_leave"/>
+                            <field name="current_leave_deduction"/>
+                            <field name="remaining_leave_balc"/>
+                            <field name="prev_sick_leave_bal"/>
+                            <field name="prev_sick_leave_dedu"/>
+                            <field name="remaining_sick_leave_balc"/>
+                            <field name="date"/>
+                            <field name="hr_comment"/>
+                        </group>
+                         <group string="Rejected Request Details" attrs="{'invisible': [('reject_reason','=',False)]}">
+                            <field name="reject_opinion"/>
+                            <field name="reject_date"/>
+                            <field name="reject_reason"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="employee_leave_request_search_view" model="ir.ui.view">
+        <field name="name">Search</field>
+        <field name="model">leave.request</field>
+        <field name="arch" type="xml">
+        <search>
+            <field name="name" string="Leave Request Number" filter_domain="[('name','ilike', self)]"/>
+            <filter string="Today Leave Request" name="today_request" domain="[('create_date','&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('create_date','&lt;=',datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))] "/>                      
+        </search>
+        </field>
+    </record> 
+
+
+    <record model="ir.actions.act_window" id="action_view_employee_leave_request">
+        <field name="name">Leave Request</field>
+        <field name="res_model">leave.request</field>
+        <field name="view_type">form</field>
+        <field name="context">{'search_default_today_request': 1}</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create new leave request now...
+            </p>
+        </field>
+    </record>
+    
+    <menuitem id="leave_management_details" 
+              name="LEAVE MODULE"
+              web_icon="olib_leave_management,static/description/logo.png"
+              sequence="2"
+              />
+
+    <menuitem id="leave_request_details"
+              name="Leave Request" 
+              parent="leave_management_details"
+              action="action_view_employee_leave_request"
+              sequence="1"
+              />
+</odoo>

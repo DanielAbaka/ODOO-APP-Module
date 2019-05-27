@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="sequence_security_check" model="ir.sequence">
+            <field name="name">Vehicle Check Code</field>
+            <field name="code">security.check</field>
+            <field eval="4" name="padding" />
+            <field name="prefix">OLIBVC</field>
+        </record>
+
+        <record id="view_checkin_form" model="ir.ui.view">
+            <field name="name">checkin.vehicle.form</field>
+            <field name="model">checkin.vehicle</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Check In">
+                    <group>
+                        <group>
+                            <field name="drive_in_by"/>
+                            <field name="driver_in_name" attrs="{'invisible': [('drive_in_by','=','ein')]}" options="{'no_create': True}" />
+                            <field name="employee_in_name" attrs="{'invisible': [('drive_in_by','=','din')]}"
+                                options="{'no_create': True}"/>
+                            <field name="check_in_date_time"/>
+                        </group>
+                        <group>
+                            <field name="end_fuel_reading"/>
+                            <field name="end_mileage" />
+                            <field name="total_mileage" />
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="button_checkin" type="object" class="oe_highlight" string="CHECK IN NOW"/>
+                        <button special="cancel" class="oe_highlight" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="view_checkin_action">
+            <field name="name">Vehicle Check In</field>
+            <field name="res_model">checkin.vehicle</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'request_id': active_id}</field>
+            <field name="target">new</field>
+        </record>
+
+
+        <record id="view_security_check_tree" model="ir.ui.view">
+            <field name="name">security.check.tree</field>
+            <field name="model">security.check</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <tree string="Security Check" import='false'>
+                    <field name="name"/>
+                    <field name="license_plate"/>
+                    <field name="vehicles_type"/>
+                    <field name="check_out_date_time"/>
+                    <field name="start_fuel_reading"/>
+                    <field name="start_mileage"/>
+                    <field name="check_out_date_time"/>
+                    <field name="check_in_date_time"/>
+                    <field name="end_fuel_reading"/>
+                    <field name="end_mileage"/>
+
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_security_check_form" model="ir.ui.view">
+            <field name="name">security.check.form</field>
+            <field name="model">security.check</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Security Check">
+                   <header>
+                        <button name="button_submit" type="object" states='new' class="oe_highlight" string="CHECK OUT NOW"/>
+
+                        <button name="%(view_checkin_action)d" type="action" states='out' class="oe_highlight" string="CHECK IN"/>
+
+
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class='oe_right'>
+                            <img src='olib_request/static/description/icon.png' style="width:10%; float:right;"/>
+                        </div>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                        <group>
+                            <group string="Employee or Driver Details">
+                                <field name="drive_out_by" />
+                                <field name="driver_name" attrs="{'invisible': [('drive_out_by','=','emp')]}" options="{'no_create': True}" />
+                                <field name="employee_name" attrs="{'invisible': [('drive_out_by','=','dr')]}"
+                                options="{'no_create': True}"/>
+                                <field name="mobile_number_dr" attrs="{'invisible': [('drive_out_by','=','emp')]}"/>
+                                <field name="mobile_number_emp" attrs="{'invisible': [('drive_out_by','=','dr')]}"/>
+                                <field name="department" attrs="{'invisible': [('drive_out_by','=','dr')]}"/>
+                                <field name="number_of_person" />
+                                <field name="start_from"/>
+                                <field name="destination"/>
+                            </group>
+                            <group string="Vehicle Details">
+                                <field name="license_plate" options="{'no_create': True}"/>
+                                <field name="vehicles_type"/>
+                                <field name="check_out_date_time"/>
+                                <field name="start_fuel_reading"/>
+                                <field name="start_mileage"/>
+                                <field name="transport_dept_name" options="{'no_create': True}"/>
+                                <field name="transport_dept_number"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="reason" placeholder="Reason"/>
+                        </group>
+                        <group string="Vehicle Check-In Details" attrs="{'invisible': [('end_fuel_reading','=',False)]}">
+                            <group>
+                                <field name="drive_in_by"/>
+                                <field name="driver_in_name"/>
+                                <field name="employee_in_name"/>
+                                <field name="check_in_date_time"/>
+                            </group>
+                        
+                            <group>
+                                <field name="end_fuel_reading"/>
+                                <field name="end_mileage" />
+                                <field name="total_mileage" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="security_check_search_view" model="ir.ui.view">
+            <field name="name">Search</field>
+            <field name="model">security.check</field>
+            <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Vehicle Check Number" filter_domain="[('name','ilike', self)]"/>
+                <filter string="Today Check" name="today_request" domain="[('create_date','&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('create_date','&lt;=',datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))] "/>                      
+            </search>
+            </field>
+        </record> 
+
+        <record model="ir.actions.act_window" id="action_view_security_check">
+            <field name="name">New</field>
+            <field name="res_model">security.check</field>
+            <field name="view_type">form</field>
+            <field name="context">{'search_default_today_request': 1}</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Create new security check
+                </p>
+            </field>
+        </record>
+        
+        <menuitem id="security_check" name="Direct Check" parent="menu_request" 
+            action="action_view_security_check" groups="olib_request.group_security" />
+
+    </data>
+</odoo>

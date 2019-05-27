@@ -1,0 +1,729 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <odoo>
+    <record id="view_manager_details_tree" model="ir.ui.view">
+        <field name="name">manager.details.tree</field>
+        <field name="model">manager.details</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <tree string="Manager Details">
+                <field name="registration_id"/>
+                <field name="manager_lname"/>
+                <field name="manager_fname"/>
+                <field name="manager_email"/>
+                <field name="manager_number"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_manager_details_form" model="ir.ui.view">
+        <field name="name">manager.details.form</field>
+        <field name="model">manager.details</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="Managers Details">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            <img src='olib_fleet/static/description/icon.png' style="width:30%; float:right;"/>
+                        </button>
+                    </div>
+                    <field name="image" widget='image' class="oe_avatar"/>  
+                    <group col="2">
+                        <group string="Personal Information">
+                            <field name="registration_id"/>
+                            <field name="manager_lname"/>
+                            <field name="manager_fname"/>
+                        </group>
+                        <group string="Contacts">
+                            <field name="manager_email"/>
+                            <field name="manager_number"/>
+                            <field name="department"/>
+                        </group>
+                     </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="manager_template_kanban_view" model="ir.ui.view">
+        <field name="name">manager.details.kanban</field>
+        <field name="model">manager.details</field>
+        <field name="arch" type="xml">
+        <kanban>
+            <field name="image" modifiers="{}"/>
+            <field name="id"/>
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_global_click">
+                        <div class="o_kanban_image">
+                            <img t-att-src="kanban_image('manager.details', 'image', record.id.value)"/>
+                        </div>
+                        <div class="oe_kanban_details">
+                        <strong>
+                            <field name="manager_lname"/>
+                            <field name="manager_fname"/><br/>
+                            <ul>
+                                <li><field name="manager_email"/></li>
+                                <li><field name="manager_number"/></li>
+                            </ul>
+                        </strong>
+                        </div>
+                         <field name="registration_id"/>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_view_manager_details">
+        <field name="name">Manager Details</field>
+        <field name="res_model">manager.details</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create new manager now...
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem id="configure_employee"
+              name="Employee Configuration" 
+              parent="employee_details"
+              sequence="2"
+              />
+
+    <menuitem id="manager_configuration" name="Managers Approval Details" parent="configure_employee"
+              action="action_view_manager_details" sequence="2" />
+
+
+
+    <record id="view_drivers_details_tree" model="ir.ui.view">
+        <field name="name">drivers.details.tree</field>
+        <field name="model">drivers.details</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <tree string="Drivers Details">
+                <field name="registration_id"/>
+                <field name="drivers_lname"/>
+                <field name="drivers_fname"/>
+                <field name="licence_number"/>
+                <field name="licence_type"/>
+                <field name="licence_date_issues"/>
+                <field name="licence_date_expires"/>
+                <field name="permanent_address"/>
+                <field name="drivers_email"/>
+                <field name="drivers_number"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_drivers_details_form" model="ir.ui.view">
+        <field name="name">drivers.details.form</field>
+        <field name="model">drivers.details</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="Driverss Details">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            <img src='olib_fleet/static/description/icon.png' style="width:30%; float:right;"/>
+                        </button>
+                    </div>
+                    <field name="image" widget='image' class="oe_avatar"/>  
+                    <group col="2">
+                        <group string="Personal Information">
+                            <field name="registration_id"/>
+                            <field name="drivers_lname"/>
+                            <field name="drivers_fname"/>
+                            <field name="licence_number"/>
+                            <field name="licence_type"/>
+                            <field name="licence_date_issues"/>
+                            <field name="licence_date_expires"/>
+                            
+                        </group>
+                        <group string="Contacts">
+                            <field name="permanent_address"/>
+                            <field name="drivers_email"/>
+                            <field name="drivers_number"/>
+                        </group>
+                     </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="driver_template_kanban_view" model="ir.ui.view">
+        <field name="name">drivers.details.kanban</field>
+        <field name="model">drivers.details</field>
+        <field name="arch" type="xml">
+        <kanban>
+            <field name="image" modifiers="{}"/>
+            <field name="id"/>
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_global_click">
+                        <div class="o_kanban_image">
+                            <img t-att-src="kanban_image('drivers.details', 'image', record.id.value)"/>
+                        </div>
+                        <div class="oe_kanban_details">
+                        <strong>
+                            <field name="drivers_lname"/>
+                            <field name="drivers_fname"/><br/>
+                            <ul>
+                                <li><field name="drivers_email"/></li>
+                                <li>Licence Date Issues: <field name="licence_date_issues"/></li>
+                                <li>Licence Date Expires: <field name="licence_date_expires"/></li>
+                            </ul>
+                        </strong>
+                        </div>
+                         <field name="registration_id"/>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+        </field>
+    </record>
+
+
+    <record id="search_all_driver" model="ir.ui.view">
+        <field name="name">Search</field>
+        <field name="model">drivers.details</field>
+        <field name="arch" type="xml">
+        <search>
+            <field name="drivers_fname" string="First Name" filter_domain="[('drivers_fname','ilike', self)]"/>
+            <field name="drivers_lname" string="Last Name" filter_domain="[('drivers_lname','ilike', self)]"/>
+        </search>
+        </field>
+    </record> 
+
+    <record model="ir.actions.act_window" id="action_view_drivers_details">
+        <field name="name">Drivers Details</field>
+        <field name="res_model">drivers.details</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{'group_by':['licence_type']}</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create new driver now...
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="drivers_configuration" name="Drivers Assigned Details" parent="configure_employee"
+              action="action_view_drivers_details" sequence="3" />
+
+
+
+    <record id="view_finance_details_tree" model="ir.ui.view">
+        <field name="name">finance.details.tree</field>
+        <field name="model">finance.details</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <tree string="Finance Details">
+                <field name="registration_id"/>
+                <field name="finance_lname"/>
+                <field name="finance_fname"/>
+                <field name="finance_email"/>
+                <field name="finance_number"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_finance_details_form" model="ir.ui.view">
+        <field name="name">finance.details.form</field>
+        <field name="model">finance.details</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="Finance Details">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            <img src='olib_fleet/static/description/icon.png' style="width:30%; float:right;"/>
+                        </button>
+                    </div>
+                    <field name="image" widget='image' class="oe_avatar"/>  
+                    <group col="2">
+                        <group string="Personal Information">
+                            <field name="registration_id"/>
+                            <field name="finance_lname"/>
+                            <field name="finance_fname"/>
+                        </group>
+                        <group string="Contacts">
+                            <field name="finance_email"/>
+                            <field name="finance_number"/>
+                        </group>
+                     </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+     <record id="finance_template_kanban_view" model="ir.ui.view">
+        <field name="name">finance.details.kanban</field>
+        <field name="model">finance.details</field>
+        <field name="arch" type="xml">
+        <kanban>
+            <field name="image" modifiers="{}"/>
+            <field name="id"/>
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_global_click">
+                        <div class="o_kanban_image">
+                            <img t-att-src="kanban_image('finance.details', 'image', record.id.value)"/>
+                        </div>
+                        <div class="oe_kanban_details">
+                        <strong>
+                            <field name="finance_lname"/>
+                            <field name="finance_fname"/><br/>
+                            <ul>
+                                <li><field name="finance_email"/></li>
+                                <li><field name="finance_number"/></li>
+                            </ul>
+                        </strong>
+                        </div>
+                         <field name="registration_id"/>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+        </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="action_view_finance_details">
+        <field name="name">Finance Details</field>
+        <field name="res_model">finance.details</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create new finance now...
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="finance_configuration" name="Finance Approval Details" parent="configure_employee"
+              action="action_view_finance_details" sequence="4" />
+
+
+
+    <record id="view_mechanic_details_tree" model="ir.ui.view">
+        <field name="name">mechanic.details.tree</field>
+        <field name="model">mechanic.details</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <tree string="Mechanic Details">
+                <field name="registration_id"/>
+                <field name="mechanic_lname"/>
+                <field name="mechanic_fname"/>
+                <field name="mechanic_email"/>
+                <field name="mechanic_number"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_mechanic_details_form" model="ir.ui.view">
+        <field name="name">mechanic.details.form</field>
+        <field name="model">mechanic.details</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="Mechanic Details">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            <img src='olib_fleet/static/description/icon.png' style="width:30%; float:right;"/>
+                        </button>
+                    </div>
+                    <field name="image" widget='image' class="oe_avatar"/>  
+                    <group col="2">
+                        <group string="Personal Information">
+                            <field name="registration_id"/>
+                            <field name="mechanic_lname"/>
+                            <field name="mechanic_fname"/>
+                        </group>
+                        <group string="Contacts">
+                            <field name="mechanic_email"/>
+                            <field name="mechanic_number"/>
+                        </group>
+                     </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="mechanic_template_kanban_view" model="ir.ui.view">
+        <field name="name">mechanic.details.kanban</field>
+        <field name="model">mechanic.details</field>
+        <field name="arch" type="xml">
+        <kanban>
+            <field name="image" modifiers="{}"/>
+            <field name="id"/>
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_global_click">
+                        <div class="o_kanban_image">
+                            <img t-att-src="kanban_image('mechanic.details', 'image', record.id.value)"/>
+                        </div>
+                        <div class="oe_kanban_details">
+                        <strong>
+                            <field name="mechanic_lname"/>
+                            <field name="mechanic_fname"/><br/>
+                            <ul>
+                                <li><field name="mechanic_email"/></li>
+                                <li><field name="mechanic_number"/></li>
+                            </ul>
+                        </strong>
+                        </div>
+                         <field name="registration_id"/>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_view_mechanic_details">
+        <field name="name">Mechanic Details</field>
+        <field name="res_model">mechanic.details</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create new mechanic now...
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="mechanic_configuration" name="Mechanic Approval Details" parent="configure_employee"
+              action="action_view_mechanic_details" sequence="5" />
+
+
+
+
+<record id="view_security_details_tree" model="ir.ui.view">
+        <field name="name">security.details.tree</field>
+        <field name="model">security.details</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <tree string="Security Details">
+                <field name="registration_id"/>
+                <field name="security_lname"/>
+                <field name="security_fname"/>
+                <field name="security_email"/>
+                <field name="security_number"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_security_details_form" model="ir.ui.view">
+        <field name="name">security.details.form</field>
+        <field name="model">security.details</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="Security Details">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            <img src='olib_fleet/static/description/icon.png' style="width:30%; float:right;"/>
+                        </button>
+                    </div>
+                    <field name="image" widget='image' class="oe_avatar"/>  
+                    <group col="2">
+                        <group string="Personal Information">
+                            <field name="registration_id"/>
+                            <field name="security_lname"/>
+                            <field name="security_fname"/>
+                        </group>
+                        <group string="Contacts">
+                            <field name="security_email"/>
+                            <field name="security_number"/>
+                        </group>
+                     </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="security_template_kanban_view" model="ir.ui.view">
+        <field name="name">security.details.kanban</field>
+        <field name="model">security.details</field>
+        <field name="arch" type="xml">
+        <kanban>
+            <field name="image" modifiers="{}"/>
+            <field name="id"/>
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_global_click">
+                        <div class="o_kanban_image">
+                            <img t-att-src="kanban_image('security.details', 'image', record.id.value)"/>
+                        </div>
+                        <div class="oe_kanban_details">
+                        <strong>
+                            <field name="security_lname"/>
+                            <field name="security_fname"/><br/>
+                            <ul>
+                                <li><field name="security_email"/></li>
+                                <li><field name="security_number"/></li>
+                            </ul>
+                        </strong>
+                        </div>
+                         <field name="registration_id"/>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_view_security_details">
+        <field name="name">Security Details</field>
+        <field name="res_model">security.details</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create new security now...
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="security_configuration" name="Security Approval Details" parent="configure_employee"
+              action="action_view_security_details" sequence="6" />
+
+
+
+
+    <record id="view_transport_details_tree" model="ir.ui.view">
+        <field name="name">transport.details.tree</field>
+        <field name="model">transport.details</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <tree string="Transport Details">
+                <field name="registration_id"/>
+                <field name="transport_lname"/>
+                <field name="transport_fname"/>
+                <field name="transport_email"/>
+                <field name="transport_number"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_transport_details_form" model="ir.ui.view">
+        <field name="name">transport.details.form</field>
+        <field name="model">transport.details</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="Transport Details">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            <img src='olib_fleet/static/description/icon.png' style="width:30%; float:right;"/>
+                        </button>
+                    </div>
+                    <field name="image" widget='image' class="oe_avatar"/>  
+                    <group col="2">
+                        <group string="Personal Information">
+                            <field name="registration_id"/>
+                            <field name="transport_lname"/>
+                            <field name="transport_fname"/>
+                        </group>
+                        <group string="Contacts">
+                            <field name="transport_email"/>
+                            <field name="transport_number"/>
+                        </group>
+                     </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="transport_template_kanban_view" model="ir.ui.view">
+        <field name="name">transport.details.kanban</field>
+        <field name="model">transport.details</field>
+        <field name="arch" type="xml">
+        <kanban>
+            <field name="image" modifiers="{}"/>
+            <field name="id"/>
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_global_click">
+                        <div class="o_kanban_image">
+                            <img t-att-src="kanban_image('transport.details', 'image', record.id.value)"/>
+                        </div>
+                        <div class="oe_kanban_details">
+                        <strong>
+                            <field name="transport_lname"/>
+                            <field name="transport_fname"/><br/>
+                            <ul>
+                                <li><field name="transport_email"/></li>
+                                <li><field name="transport_number"/></li>
+                            </ul>
+                        </strong>
+                        </div>
+                         <field name="registration_id"/>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_view_transport_details">
+        <field name="name">Transport Details</field>
+        <field name="res_model">transport.details</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create new transport now...
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="transport_configuration" name="Transport Approval Details" parent="configure_employee"
+              action="action_view_transport_details" sequence="7" />
+
+
+
+    <record id="view_procurement_details_tree" model="ir.ui.view">
+        <field name="name">procurement.details.tree</field>
+        <field name="model">procurement.details</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <tree string="Procurement Details">
+                <field name="registration_id"/>
+                <field name="procurement_lname"/>
+                <field name="procurement_fname"/>
+                <field name="procurement_email"/>
+                <field name="procurement_number"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_procurement_details_form" model="ir.ui.view">
+        <field name="name">procurement.details.form</field>
+        <field name="model">procurement.details</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="Procurement Details">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            <img src='olib_fleet/static/description/icon.png' style="width:30%; float:right;"/>
+                        </button>
+                    </div>
+                    <field name="image" widget='image' class="oe_avatar"/>  
+                    <group col="2">
+                        <group string="Personal Information">
+                            <field name="registration_id"/>
+                            <field name="procurement_lname"/>
+                            <field name="procurement_fname"/>
+                        </group>
+                        <group string="Contacts">
+                            <field name="procurement_email"/>
+                            <field name="procurement_number"/>
+                        </group>
+                     </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="procurement_template_kanban_view" model="ir.ui.view">
+        <field name="name">procurement.details.kanban</field>
+        <field name="model">procurement.details</field>
+        <field name="arch" type="xml">
+        <kanban>
+            <field name="image" modifiers="{}"/>
+            <field name="id"/>
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_global_click">
+                        <div class="o_kanban_image">
+                            <img t-att-src="kanban_image('procurement.details', 'image', record.id.value)"/>
+                        </div>
+                        <div class="oe_kanban_details">
+                        <strong>
+                            <field name="procurement_lname"/>
+                            <field name="procurement_fname"/><br/>
+                            <ul>
+                                <li><field name="procurement_email"/></li>
+                                <li><field name="procurement_number"/></li>
+                            </ul>
+                        </strong>
+                        </div>
+                         <field name="registration_id"/>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_view_procurement_details">
+        <field name="name">Procurement Details</field>
+        <field name="res_model">procurement.details</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create new procurement now...
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="procurement_configuration" name="Procurement Approval Details" parent="configure_employee" action="action_view_procurement_details" sequence="8" />
+
+
+
+    <record id="view_employee_status_tree" model="ir.ui.view">
+        <field name="name">employee.status.tree</field>
+        <field name="model">employee.status</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <tree string="Employee Status" editable="top">
+                <field name="emp_status" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_employee_status_form" model="ir.ui.view">
+        <field name="name">employee.status.form</field>
+        <field name="model">employee.status</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="Employee Status">
+                <sheet>
+                    
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_view_employee_status">
+        <field name="name">Employee Status</field>
+        <field name="res_model">employee.status</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create new status now...
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="employee_status_configuration" name="Employee Status" parent="configure_employee"
+              action="action_view_employee_status" sequence="9" />
+</odoo>

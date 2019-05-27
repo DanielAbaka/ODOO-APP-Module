@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <odoo>
+<!--Vehicle Make Coding Start here-->
+    <record id='fleet_vehicle_model_make_view_tree' model='ir.ui.view'>
+        <field name="name">fleet.vehicle.make.tree</field>
+        <field name="model">fleet.vehicle.make</field>
+        <field name="arch" type="xml">
+            <tree string="Model Make">
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id='fleet_vehicle_make_brand_view_form' model='ir.ui.view'>
+        <field name="name">fleet.vehicle.make.form</field>
+        <field name="model">fleet.vehicle.make</field>
+        <field name="arch" type="xml">
+            <form string="Model Make">
+                <group>
+                    <div>
+                        <field name="image" widget="image" class="oe_avatar"/>
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id='fleet_vehicle_model_brand_view_kanban' model='ir.ui.view'>
+        <field name="name">fleet.vehicle.make.kanban</field>
+        <field name="model">fleet.vehicle.make</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="id"/>
+                <field name="name" />
+                <field name="image" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_vignette oe_semantic_html_override">
+                            <a type="open" href="#" class="o_kanban_image oe_kanban_action">
+                                <img t-att-src="kanban_image('fleet.vehicle.make', 'image', record.id.raw_value)" class="img-responsive" style="width:100px;"/>
+                            </a>
+                            <div class="oe_kanban_details">
+                                <h4 class="oe_partner_heading">
+                                    <a type="open" class="o_kanban_record_title">
+                                        <field name="name"/>
+                                    </a>
+                                </h4>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id='fleet_vehicle_model_make_action' model='ir.actions.act_window'>
+        <field name="name">Model make of Vehicle</field>
+        <field name="res_model">fleet.vehicle.make</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Click to create a new make.
+          </p>
+        </field>
+    </record>
+
+     
+    <menuitem id="fleet_configuration"
+              name="Fleet Configuration" 
+              parent="fleet_vehicle"
+              sequence="2"
+              />
+
+    <menuitem id="fleet_configuration_make"
+              name="Vehicle Make" 
+              parent="fleet_configuration"
+              action="fleet_vehicle_model_make_action"
+              sequence="3"
+              />
+
+<!--Vehicle Make Coding End here-->
+
+<!--Vehicle Model Coding Start here-->
+
+    <record id='fleet_vehicle_model_view_tree' model='ir.ui.view'>
+        <field name="name">fleet.vehicle.model.tree</field>
+        <field name="model">fleet.vehicle.model</field>
+        <field name="arch" type="xml">
+            <tree string="Model">
+                <field name="name" />
+                <field name="brand" />
+            </tree>
+        </field>
+    </record>
+
+    <record id='fleet_vehicle_model_brand_view_form' model='ir.ui.view'>
+        <field name="name">fleet.vehicle.model.form</field>
+        <field name="model">fleet.vehicle.model</field>
+        <field name="arch" type="xml">
+            <form string="Model">
+                <sheet>
+                    <div class="oe_title">
+                        <field name="image_id" widget="image" class="oe_avatar"/>
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Model S"/>
+                        </h1>
+                        <label for="brand" class="oe_edit_only"/>
+                        <h2>
+                            <field name="brand" placeholder="e.g. Tesla"/>
+                        </h2>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- <record id='fleet_vehicle_model_brand_view_kanban' model='ir.ui.view'>
+        <field name="name">fleet.vehicle.model.brandkanban</field>
+        <field name="model">fleet.vehicle.model.brand</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="id"/>
+                <field name="name" />
+                <field name="image" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_vignette oe_semantic_html_override">
+                            <a type="open" href="#" class="o_kanban_image oe_kanban_action">
+                                <img t-att-src="kanban_image('fleet.vehicle.model.brand', 'image_small', record.id.raw_value)" class="img-responsive" style="width:100px;"/>
+                            </a>
+                            <div class="oe_kanban_details">
+                                <h4 class="oe_partner_heading">
+                                    <a type="open" class="o_kanban_record_title">
+                                        <field name="name"/>
+                                    </a>
+                                </h4>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record> -->
+
+    <record id='fleet_vehicle_model_action' model='ir.actions.act_window'>
+        <field name="name">Model of Vehicle</field>
+        <field name="res_model">fleet.vehicle.model</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Click to create a new make.
+          </p>
+        </field>
+    </record>
+
+     
+    <menuitem id="fleet_configuration_model"
+              name="Vehicle Model" 
+              parent="fleet_configuration"
+              action="fleet_vehicle_model_action"
+              sequence="4"
+              />
+
+    <!--Vehicle Model Coding End here-->
+
+    <!--Vehicle Tags Coding Start here-->
+
+    <record id='fleet_vehicle_tags_view_tree' model='ir.ui.view'>
+        <field name="name">fleet.vehicle.tags.tree</field>
+        <field name="model">fleet.vehicle.tags</field>
+        <field name="arch" type="xml">
+            <tree string="Tags" editable="top">
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id='fleet_vehicle_tags_brand_view_form' model='ir.ui.view'>
+        <field name="name">fleet.vehicle.tags.form</field>
+        <field name="model">fleet.vehicle.tags</field>
+        <field name="arch" type="xml">
+            <form string="Tags">
+                <group>
+                    <div>
+                       <!--  <field name="image_medium" widget="image" class="oe_avatar"/>
+                        <label for="name" class="oe_edit_only"/> -->
+                        <h1>
+                            <!-- <field name="name"/> -->
+                        </h1>
+                    </div>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    
+
+    <record id='fleet_vehicle_tags_action' model='ir.actions.act_window'>
+        <field name="name">Tags of Vehicle</field>
+        <field name="res_model">fleet.vehicle.tags</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Click to create a new tags.
+          </p>
+        </field>
+    </record>
+
+     
+    <menuitem id="fleet_configuration_tags"
+              name="Vehicle Tags" 
+              parent="fleet_configuration"
+              action="fleet_vehicle_tags_action"
+              sequence="5"
+              />
+
+    <!--Vehicle Tags Coding End here-->
+
+    <!--Vehicle Service Type Coding Start here-->
+
+    <record id='fleet_vehicle_services_type_view_tree' model='ir.ui.view'>
+        <field name="name">fleet.vehicle.services.type.tree</field>
+        <field name="model">fleet.vehicle.services.type</field>
+        <field name="arch" type="xml">
+            <tree string="Services Type" editable="top">
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id='fleet_vehicle_services_type_action' model='ir.actions.act_window'>
+        <field name="name">Vehicle Services Type</field>
+        <field name="res_model">fleet.vehicle.services.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Click to create a new tags.
+          </p>
+        </field>
+    </record>
+
+     
+    <menuitem id="fleet_configuration_services_type"
+              name="Services Type" 
+              parent="fleet_configuration"
+              action="fleet_vehicle_services_type_action"
+              sequence="5"
+              />
+
+    <!--Vehicle Service Type Coding End here-->
+
+</odoo>

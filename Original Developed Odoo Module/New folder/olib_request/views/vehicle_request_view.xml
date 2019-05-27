@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="sequence_vehicle_request" model="ir.sequence">
+            <field name="name">Vehicle Request Number</field>
+            <field name="code">request.vehicle</field>
+            <field eval="4" name="padding" />
+            <field name="prefix">OLIBVR</field>
+        </record>
+
+        <record id="view_manager_form" model="ir.ui.view">
+            <field name="name">manager.validate.form</field>
+            <field name="model">manager.validate</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Manager Approval">
+                    <group> 
+                        <field name="opinion"/> 
+                        <field name="transport_dept_name" options="{'no_create': True}"/>
+                        <field name="transport_dept_number"/>
+                        <field name="approved_date"/>
+                        <field name="comment"/>
+                    </group>
+                    <footer>
+                        <button name="button_send" type="object" class="oe_highlight" string="Approve Now"/>
+                        <button special="cancel" class="oe_highlight" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_assigned_form" model="ir.ui.view">
+            <field name="name">assigned.vehicle.form</field>
+            <field name="model">assigned.vehicle</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Assigned">
+                    <group>
+                        <group>
+                            <field name="license_plate" options="{'no_create': True}"/>
+                            <field name="driver_name" options="{'no_create': True}"/>
+                            <field name="security_dept_name" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="vehicles_type"/>
+                            <field name="drivers_number" />
+                            <field name="security_dept_number" />
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="button_assign" type="object" class="oe_highlight" string="Assign Now"/>
+                        <button special="cancel" class="oe_highlight" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_checkout_form" model="ir.ui.view">
+            <field name="name">check.out.form</field>
+            <field name="model">check.out</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Check Out">
+                    <group>
+                        <group>
+                            <field name="check_out_date_time"/>
+                            <field name="start_fuel_reading"/>
+                        </group>
+                        <group>
+                            <field name="start_mileage"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="button__check_out" type="object" class="oe_highlight" string="Check Out"/>
+                        <button special="cancel" class="oe_highlight" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_vehiclecheck_in_form" model="ir.ui.view">
+            <field name="name">check.vehicle.in.form</field>
+            <field name="model">check.vehicle.in</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml" >
+                <form string="Check In">
+                    <group>
+                        <group>
+                            <field name="drive_in_by"/>
+                            <field name="driver_in_name" attrs="{'invisible': [('drive_in_by','=','ein')]}" options="{'no_create': True}" />
+                            <field name="employee_in_name" attrs="{'invisible': [('drive_in_by','=','din')]}"
+                                options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="check_in_date_time"/>
+                            <field name="return_fuel_reading"/>
+                            <field name="return_mileage"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="button_checkvehicle_in" type="object" class="oe_highlight" string="Check In"/>
+                        <button special="cancel" class="oe_highlight" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_hold_form" model="ir.ui.view">
+            <field name="name">hold.request.form</field>
+            <field name="model">hold.request</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Hold Request">
+                    <group>
+                       <field name="onhold_reason" placeholder="Kindly state your reason"/>
+                    </group>
+                    <footer>
+                        <button name="button_hold" type="object" class="oe_highlight" string="Hold Now"/>
+                        <button special="cancel" class="oe_highlight" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_returned_form" model="ir.ui.view">
+            <field name="name">return.request.form</field>
+            <field name="model">return.request</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Return Request">
+                    <group>
+                        <field name="return_opinion"/>
+                        <field name="return_date"/>
+                        <field name="return_reason"/>
+                    </group>
+                    <footer>
+                        <button name="button_return" type="object" class="oe_highlight" string="Refuse Now"/>
+                        <button special="cancel" class="oe_highlight" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="view_manager_action">
+            <field name="name">Manager Approve Request</field>
+            <field name="res_model">manager.validate</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'request_id': active_id}</field>
+            <field name="target">new</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="view_assigned_action">
+            <field name="name">Assign Vehicle And Driver</field>
+            <field name="res_model">assigned.vehicle</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'request_id': active_id}</field>
+            <field name="target">new</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="view_checkout_action">
+            <field name="name">Security Check Out View</field>
+            <field name="res_model">check.out</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'request_id': active_id}</field>
+            <field name="target">new</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="view_checkvehicle_in_action">
+            <field name="name">Security Check In View</field>
+            <field name="res_model">check.vehicle.in</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'request_id': active_id}</field>
+            <field name="target">new</field>
+        </record>
+        
+
+        <record model="ir.actions.act_window" id="view_hold_action">
+            <field name="name">Hold Vehicle Request View</field>
+            <field name="res_model">hold.request</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'request_id': active_id}</field>
+            <field name="target">new</field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="view_returned_action">
+            <field name="name">Refuse Vehicle Request View</field>
+            <field name="res_model">return.request</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'request_id': active_id}</field>
+            <field name="target">new</field>
+        </record>
+
+        
+        <record id="view_request_tree_view" model="ir.ui.view">
+            <field name="name">request.vehicle.tree</field>
+            <field name="model">request.vehicle</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <tree string="Request">
+                    <field name="req_date_time"/>
+                    <field name="name"/>
+                    <field name="license_plate"/>
+                    <field name="vehicle_type"/>
+                    <field name="emp_name"/>
+                    <field name="emp_number"/>
+                    <field name="department"/>
+                    <field name="position"/>
+                   <!--  <field name="check_in_date_time"/> -->
+                    <!-- <field name="total_mileage"/> -->
+                    <field name="state"/> 
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_request_form" model="ir.ui.view">
+            <field name="name">request.vehicle.form</field>
+            <field name="model">request.vehicle</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Request">
+                   <header>
+                        <button name="button_submit" type="object" states='new' class="oe_highlight" string="Send Request" />
+                        <button name="%(view_manager_action)d" type="action" states='manager' class="oe_highlight" string="Validate"/>
+
+                        <button name="%(view_returned_action)d" type="action" states='manager,wap,hold' class="oe_highlight" string="Refuse"/>
+
+                        <button name="%(view_assigned_action)d" type="action" states='wap,hold' class="oe_highlight" string="Assign"/>
+
+                        <button name="%(view_hold_action)d" type="action" states='wap' class="oe_highlight" string="On Hold"/>
+
+                        <button name="%(view_checkout_action)d" type="action" states='sec' class="oe_highlight" string="Check Out"/>
+
+                        <button name="%(view_checkvehicle_in_action)d" type="action" states='out' class="oe_highlight" string="Check In"/>
+                        
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class='oe_right'>
+                            <img src='olib_request/static/description/icon.png' style="width:10%; float:right;"/>
+                        </div>
+                         <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                       
+                        <group string="Application For Vehicle Request">
+                              <group>
+                                <field name="emp_name" options="{'no_create': True}"/>
+                                <field name="emp_number"/>
+                                <field name="department"/>
+                                <field name="position"/>
+                                <field name="vehicle_type"/>
+                                <field name="location"/>
+                             </group>
+                            <group>
+                                <field name="destination"/>
+                                <field name="seating_capacity"/>
+                                <field name="drive_out_by" />
+                                <field name="employee_out_name" attrs="{'invisible': [('drive_out_by','=','dr')]}" options="{'no_create': True}"/>
+                                <field name="req_date_time"/>
+                                <field name="manager_name" options="{'no_create': True}"/>
+                                <field name="manager_number"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="reasons" placeholder="Clearly state the reason of your trip..."/>
+                        </group>
+                        <group>
+                            <group string="Manager Approval" attrs="{'invisible':   [('approved_date','=',False)]}">
+                                <field name="opinion"/>
+                                <field name="transport_dept_name"/>
+                                <field name="transport_dept_number"/>
+                                <field name="approved_date"/>
+                                <field name="comment"/>
+                            </group>
+                            <group string="Assignment of Vehicle and/or Driver" attrs="{'invisible': [('license_plate','=',False)]}">
+                                <field name="license_plate"/>
+                                <field name="vehicles_type"/>
+                                <field name="driver_name"/>
+                                <field name="drivers_number" />
+                                <field name="security_dept_name"/>
+                                <field name="security_dept_number" />
+                            </group>
+                        </group>
+                        <group string="Refuse Request Details" attrs="{'invisible': [('return_reason','=',False)]}">
+                                <field name="return_opinion"/>
+                                <field name="return_date"/>
+                                <field name="return_reason"/>
+                        </group>
+                        <group>
+                            <group string="Vehicle Check Out Details" attrs="{'invisible': [('check_out_date_time','=',False)]}">
+                               <!--  <field name="license_plate"/> -->
+                                <field name="check_out_date_time"/>
+                                <field name="start_fuel_reading"/>
+                                <field name="start_mileage"/>
+                            </group>
+                             <group string="Vehicle Check In Details" attrs="{'invisible': [('check_in_date_time','=',False)]}">
+                                <field name="drive_in_by" />
+                                <field name="driver_in_name" />
+                                <field name="employee_in_name" />
+                                <field name="check_in_date_time"/>
+                                <field name="return_fuel_reading"/>
+                                <field name="return_mileage"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="vehicle_request_search_view" model="ir.ui.view">
+            <field name="name">Search</field>
+            <field name="model">request.vehicle</field>
+            <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Request Number" filter_domain="[('name','ilike', self)]"/>
+                <filter string="Today Request" name="today_request" domain="[('create_date','&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('create_date','&lt;=',datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))] "/>                      
+            </search>
+            </field>
+        </record> 
+
+        <record model="ir.actions.act_window" id="action_view_requests">
+            <field name="name">New</field>
+            <field name="res_model">request.vehicle</field>
+            <field name="view_type">form</field>
+            <field name="context">{'search_default_today_request': 1}</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Create new vehicle request
+                </p>
+            </field>
+        </record>
+        <menuitem id="menu_request" web_icon="olib_request,static/description/logo.png" name="MY REQUESTS" sequence="3"/>
+        <menuitem id="request_vehicle" name="Trip Request" parent="menu_request" 
+            action="action_view_requests" />
+
+    </data>
+</odoo>

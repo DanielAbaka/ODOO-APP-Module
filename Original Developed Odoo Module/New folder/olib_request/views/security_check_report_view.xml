@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <!-- Tree view Report -->
+  <record id="security_check_tree_report" model="ir.ui.view">
+    <field name="name">security.check.report</field>
+    <field name="model">security.check</field>
+    <field name="priority" eval="20"/>
+    <field name="arch" type="xml">
+      <tree string="Security Check Report" edit="false" delete="false" import="false">
+          <field name="license_plate" attrs="{'invisible': [('check_in_date_time','=',False)]}"/>
+          <field name="vehicles_type" attrs="{'invisible': [('check_in_date_time','=',False)]}"/>
+          <field name="name" attrs="{'invisible': [('check_in_date_time','=',False)]}"/>
+          <field name="check_out_date_time" attrs="{'invisible': [('check_in_date_time','=',False)]}"/>
+          <field name="check_in_date_time" attrs="{'invisible': [('check_in_date_time','=',False)]}"/>
+          <field name="start_fuel_reading" attrs="{'invisible': [('check_in_date_time','=',False)]}"/>
+          <field name="end_fuel_reading" attrs="{'invisible': [('check_in_date_time','=',False)]}"/>
+          <field name="start_mileage" attrs="{'invisible': [('check_in_date_time','=',False)]}"/>
+          <field name="end_mileage" attrs="{'invisible': [('check_in_date_time','=',False)]}"/>
+          <field name="start_from" attrs="{'invisible': [('check_in_date_time','=',False)]}"/>
+          <field name="destination" attrs="{'invisible': [('check_in_date_time','=',False)]}"/>
+          <field name="reason" attrs="{'invisible': [('check_in_date_time','=',False)]}"/>
+          <field name="drive_out_by" attrs="{'invisible': [('check_in_date_time','=',False)]}"/>
+          <field name="drive_in_by" attrs="{'invisible': [('check_in_date_time','=',False)]}"/>
+          <field name="driver_in_name" attrs="{'invisible': [('check_in_date_time','=',False)]}"/>
+          <field name="employee_in_name" attrs="{'invisible': [('check_in_date_time','=',False)]}"/>
+          <field name="number_of_person" attrs="{'invisible': [('check_in_date_time','=',False)]}"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="security_check_report_search_view" model="ir.ui.view">
+      <field name="name">Search</field>
+      <field name="model">security.check</field>
+      <field name="arch" type="xml">
+      <search>
+          <field name="name" string="Vehicle Request Number" filter_domain="[('name','ilike', self)]"/>
+          <filter string="Today Check" name="today_request" domain="[('create_date','&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('create_date','&lt;=',datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))] "/>                      
+      </search>
+      </field>
+  </record> 
+
+  <record model="ir.actions.act_window" id="security_check_report_action">
+      <field name="name">Security Check Report</field>
+      <field name="res_model">security.check</field>
+      <field name="view_type">form</field>
+      <field name="context">{'search_default_today_request': 1}</field>
+      <field name="view_mode">tree,graph</field>
+      <field name="help" type="html">
+          <p class="">
+            Sorry, No Security Check Today.
+          </p>
+      </field>
+  </record>
+
+  <record model="ir.actions.act_window.view" id="security_check_report_action_tree">
+    <field name="view_mode">tree</field>
+    <field name="sequence" eval="1"/>
+    <field name="view_id" ref="security_check_tree_report" />
+    <field name="act_window_id" ref="security_check_report_action" />
+  </record>
+
+  <menuitem
+      id="security_check_report"
+      name="Security Check Report"
+      parent="general_report_menu"
+      action="security_check_report_action" 
+      sequence="2"/>
+     
+</odoo>

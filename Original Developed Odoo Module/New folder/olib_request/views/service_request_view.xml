@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="sequence_vehicle_service_request" model="ir.sequence">
+            <field name="name">Vehicle Service Request Number</field>
+            <field name="code">request.service</field>
+            <field eval="4" name="padding" />
+            <field name="prefix">OLIBVSR</field>
+        </record>
+
+        <record id="view_order_parts_form" model="ir.ui.view">
+            <field name="name">order.parts.form</field>
+            <field name="model">order.parts</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Chief Mechanic">
+                    <group>
+                        <field name="order_date"/>
+                        <field name="dept_head_name" options="{'no_create': True}"/>
+                        <field name="dept_head_number"/>
+                        <field name="comment"/>
+                    </group>
+                    <footer>
+                        <button name="button_send" type="object" class="oe_highlight" string="Place Order Now"/>
+                        <button special="cancel" class="oe_highlight" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_dept_head_form" model="ir.ui.view">
+            <field name="name">dept.head.form</field>
+            <field name="model">dept.head</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Dept Head">
+                    <group>
+                        <field name="dept_opinion"/>
+                        <field name="dept_approve_date"/>
+                        <field name="finance_head_name" options="{'no_create': True}"/> 
+                        <field name="finance_head_number"/> 
+                        <field name="dept_comment"/>
+                    </group>
+                    <footer>
+                        <button name="dept_button_send" type="object" class="oe_highlight" string="Approve Now"/>
+                        <button special="cancel" class="oe_highlight" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_finance_head_form" model="ir.ui.view">
+            <field name="name">finance.head.approve.form</field>
+            <field name="model">finance.head.approve</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Finance Head">
+                    <group>
+                        <field name="finance_opinion"/>
+                        <field name="fin_approve_date"/>
+                        <field name="procurement_head_name" options="{'no_create': True}"/> 
+                        <field name="procurement_head_number"/> 
+                        <field name="finance_comment"/>
+                    </group>
+                    <footer>
+                        <button name="finance_button_send" type="object" class="oe_highlight" string="Approve Now"/>
+                        <button special="cancel" class="oe_highlight" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_procurement_head_form" model="ir.ui.view">
+            <field name="name">procurement.head.delivered.form</field>
+            <field name="model">procurement.head.delivered</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Finance Head">
+                    <group>
+                        <field name="procurement_opinion"/>
+                        <field name="proc_delivered_date"/>
+                        <field name="mechanic_head_name"/> 
+                        <field name="mechanic_head_number"/>
+                        <field name="procurement_comment"/> 
+                    </group>
+                    <footer>
+                        <button name="procurement_button_send" type="object" class="oe_highlight" string="Delivered Now"/>
+                        <button special="cancel" class="oe_highlight" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_start_work_form" model="ir.ui.view">
+            <field name="name">start.service.work.form</field>
+            <field name="model">start.service.work</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Start Work">
+                    <group>
+                        <field name="start_comment_date"/>
+                        <field name="start_comment"/>
+                    </group>
+                    <footer>
+                        <button name="button_start_work" type="object" class="oe_highlight" string="Start Work"/>
+                        <button special="cancel" class="oe_highlight" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_end_work_form" model="ir.ui.view">
+            <field name="name">end.work.form</field>
+            <field name="model">end.work</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="End Work">
+                    <group>
+                        <field name="end_comment_date"/>
+                        <field name="end_comment"/>
+                    </group>
+                    <footer>
+                        <button name="button_end_work" type="object" class="oe_highlight" string="End Work"/>
+                     <button special="cancel" class="oe_highlight" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="view_refused_service_form" model="ir.ui.view">
+            <field name="name">refused.service.request</field>
+            <field name="model">refused.service.request</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Refused Service Request">
+                    <group>
+                        <field name="return_opinion"/>
+                        <field name="return_date"/>
+                        <field name="return_reason"/>
+                    </group>
+                    <footer>
+                        <button name="button_return" type="object" class="oe_highlight" string="Refuse"/>
+                        <button special="cancel" class="oe_highlight" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="view_order_action">
+            <field name="name">Order Section</field>
+            <field name="res_model">order.parts</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'request_id': active_id}</field>
+            <field name="target">new</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="view_dept_action">
+            <field name="name">Dept Head</field>
+            <field name="res_model">dept.head</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'request_id': active_id}</field>
+            <field name="target">new</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="view_finance_action">
+            <field name="name">Finance Head</field>
+            <field name="res_model">finance.head.approve</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'request_id': active_id}</field>
+            <field name="target">new</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="view_procurement_action">
+            <field name="name">Procurement Head</field>
+            <field name="res_model">procurement.head.delivered</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'request_id': active_id}</field>
+            <field name="target">new</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="view_start_action">
+            <field name="name">Start Work</field>
+            <field name="res_model">start.service.work</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'request_id': active_id}</field>
+            <field name="target">new</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="view_end_action">
+            <field name="name">End Work</field>
+            <field name="res_model">end.work</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'request_id': active_id}</field>
+            <field name="target">new</field>
+        </record> 
+
+        <record model="ir.actions.act_window" id="view_refused_action">
+            <field name="name">Refused Service Request</field>
+            <field name="res_model">refused.service.request</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'request_id': active_id}</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="view_request_tree" model="ir.ui.view">
+            <field name="name">request.service.tree</field>
+            <field name="model">request.service</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <tree string="Request" import='false'>
+                    <field name="date"/>
+                    <field name="name"/>
+                    <field name="emp_name"/>
+                    <field name="emp_number"/>
+                    <field name="license_plate"/>
+                    <field name="vehicles_type"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_service_request_form" model="ir.ui.view">
+            <field name="name">request.service.form</field>
+            <field name="model">request.service</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Service Request">
+                   <header>
+                        <button name="button_submit" type="object" states='new' class="oe_highlight" string="Submit"/>
+
+                        <button name="%(view_order_action)d" type="action" states='chief_mechanic' class="oe_highlight" string="Place Order"/>
+
+                        <button name="%(view_start_action)d" type="action" states='chief_mechanic' class="oe_highlight" string="Start Work"/>
+
+                        <button name="%(view_refused_action)d" type="action" states='chief_mechanic' class="oe_highlight" string="Refused"/>
+
+                        <button name="%(view_dept_action)d" type="action" states='dept_head' class="oe_highlight" string="Validate"/>
+
+                        <button name="%(view_refused_action)d" type="action" states='dept_head' class="oe_highlight" string="Refused"/>
+
+                        <button name="%(view_finance_action)d" type="action" states='finance' class="oe_highlight" string="Validate"/>
+
+                        <button name="%(view_refused_action)d" type="action" states='finance' class="oe_highlight" string="Refused"/>
+
+                        <button name="%(view_procurement_action)d" type="action" states='procurement' class="oe_highlight" string="Delivered"/>
+
+
+                        <button name="%(view_refused_action)d" type="action" states='procurement' class="oe_highlight" string="Refused"/>
+
+                        <button name="%(view_start_action)d" type="action" states='delivered' class="oe_highlight" string="Start Work"/>
+
+                        <button name="%(view_refused_action)d" type="action" states='delivered' class="oe_highlight" string="Refused"/>
+
+                        <button name="%(view_end_action)d" type="action" states='start_work' class="oe_highlight" string="End Work"/>
+
+                         <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class='oe_right'>
+                            <img src='olib_request/static/description/icon.png' style="width:10%; float:right;"/>
+                        </div>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                        <group string="Application For Vehicle Service">
+                            <group>
+                                <field name="emp_name" options="{'no_create': True}"/>
+                                <field name="emp_number"/>
+                                <field name="license_plate" options="{'no_create': True}"/>
+                                <field name="vehicles_type"/> 
+                            </group>
+                            <group>
+                                <field name="mechanic_head_name" options="{'no_create': True}"/>
+                                <field name="mechanic_head_number"/>
+                                <field name="service_type" options="{'no_create': True}"/>
+                                <field name="date"/>
+                            </group>
+                        </group>
+                        <group>
+                                <field name="note" nolabel="3" placeholder="Write here any information related to the service requested"/>  
+                        </group>
+                        <group>
+                            <group string="Chief Mechanic Check" attrs="{'invisible': [('comment','=',False)]}">
+                                <field name="order_date"/>
+                                <field name="dept_head_name"/> 
+                                <field name="dept_head_number"/>
+                                <field name="comment" nolabel="3" placeholder="Write here all maintenance service information need to be order..."/> 
+                            </group>
+                            <group string="Department Approval" attrs="{'invisible': [('dept_comment','=',False)]}">
+                                <field name="dept_opinion"/>
+                                <field name="dept_approve_date"/>
+                                <field name="finance_head_name" options="{'no_create': True}"/> 
+                                <field name="finance_head_number"/> 
+                                <field name="dept_comment"/> 
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Finance Approval" attrs="{'invisible': [('finance_comment','=',False)]}">
+                                <field name="finance_opinion"/>
+                                <field name="fin_approve_date"/>
+                                <field name="procurement_head_name"/> 
+                                <field name="procurement_head_number"/> 
+                                <field name="finance_comment"/> 
+                            </group>
+                            <group string="Procurement" attrs="{'invisible': [('procurement_comment','=',False)]}">
+                                <field name="procurement_opinion"/>
+                                <field name="proc_delivered_date"/>
+                                <field name="mechanic_head_name" options="{'no_create': True}"/> 
+                                <field name="mechanic_head_number"/>
+                                <field name="procurement_comment"/> 
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Start Work" attrs="{'invisible': [('start_comment','=',False)]}">
+                                 <field name="start_comment_date"/>
+                                 <field name="start_comment"/> 
+                            </group>
+                            <group string="End Work" attrs="{'invisible': [('end_comment','=',False)]}">
+                                <field name="end_comment_date"/>  
+                                <field name="end_comment"/>  
+                            </group>
+                        </group>
+                        <group string="Refused Request" attrs="{'invisible': [('return_reason','=',False)]}">
+                                <field name="return_opinion"/>
+                                <field name="return_date"/>
+                                <field name="return_reason"/>  
+                        </group> 
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="vehicle_service_request_search_view" model="ir.ui.view">
+            <field name="name">Search</field>
+            <field name="model">request.service</field>
+            <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Vehicle Request Number" filter_domain="[('name','ilike', self)]"/>
+                <filter string="Today Service Request" name="today_request" domain="[('create_date','&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('create_date','&lt;=',datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))] "/>                      
+            </search>
+            </field>
+        </record> 
+
+        <record model="ir.actions.act_window" id="action_view_service_requests">
+            <field name="name">New</field>
+            <field name="res_model">request.service</field>
+            <field name="view_type">form</field>
+            <field name="context">{'search_default_today_request': 1}</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Create new service request
+                </p>
+            </field>
+        </record>
+       
+        <menuitem id="request_vehicle_service" name="Service Request" parent="menu_request" 
+            action="action_view_service_requests" />
+
+    </data>
+</odoo>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <!-- Tree view Report -->
+  <record id="vehicle_service_request_tree_report" model="ir.ui.view">
+    <field name="name">request.service.report</field>
+    <field name="model">request.service</field>
+    <field name="priority" eval="20"/>
+    <field name="arch" type="xml">
+      <tree string="Vehicle Request" edit="false" delete="false" import="false">
+          <field name="date"/>
+          <field name="name"/>
+          <field name="emp_name"/>
+          <field name="emp_number"/>
+          <field name="license_plate"/>
+          <field name="vehicles_type"/>
+          
+      </tree>
+    </field>
+  </record>
+
+  <record id="vehicle_service_request_search_view" model="ir.ui.view">
+      <field name="name">Search</field>
+      <field name="model">request.service</field>
+      <field name="arch" type="xml">
+      <search>
+          <field name="name" string="Vehicle Request Number" filter_domain="[('name','ilike', self)]"/>
+          <filter string="Today Service Request" name="today_request" domain="[('create_date','&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('create_date','&lt;=',datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))] "/>                      
+      </search>
+      </field>
+  </record> 
+
+  <record model="ir.actions.act_window" id="vehicle_service_request_report_action">
+      <field name="name">Services Report</field>
+      <field name="res_model">request.service</field>
+      <field name="view_type">form</field>
+      <field name="context">{'search_default_today_request': 1}</field>
+      <field name="view_mode">graph,tree</field>
+      <field name="help" type="html">
+          <p class="">
+            Sorry, No Services Request Today.
+          </p>
+      </field>
+  </record>
+
+  <record model="ir.actions.act_window.view" id="vehicle_service_request_report_action_tree">
+    <field name="view_mode">tree</field>
+    <field name="sequence" eval="1"/>
+    <field name="view_id" ref="vehicle_service_request_tree_report" />
+    <field name="act_window_id" ref="vehicle_service_request_report_action" />
+  </record>
+
+  <menuitem
+      id="vehicle_service_report"
+      name="Vehicle Service Report"
+      action="vehicle_service_request_report_action" 
+      parent="general_report_menu" sequence="2"/>
+</odoo>

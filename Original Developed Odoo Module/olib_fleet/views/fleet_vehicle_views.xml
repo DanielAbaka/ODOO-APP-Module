@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <odoo>
+    <record id="view_fleet_vehicle_tree" model="ir.ui.view">
+        <field name="name">fleet.vehicle.details.tree</field>
+        <field name="model">fleet.vehicle.details</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <tree string="Fleet Vehicle" import='true'>
+                <field name="plate_number"/>
+                <field name="driver_id"/>
+                <field name="tags_name"/>
+                <field name="registration_start_date"/>
+                <field name="registration_end_date"/>
+                <field name="vehicles_type"/>
+                <field name="fuel_type"/>
+                <field name="fuel_reading"/>
+                <field name="vehicles_mileage"/>
+                <field name="mileage_reading"/>
+                <field name="level"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_fleet_vehicle_form" model="ir.ui.view">
+        <field name="name">fleet.vehicle.details.form</field>
+        <field name="model">fleet.vehicle.details</field>
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <form string="Fleet Vehicle">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            <img src='olib_fleet/static/description/icon.png' style="width:30%; float:right;"/>
+                        </button>
+                    </div>
+                    <field name="image" widget='image' class="oe_avatar"/>
+                    <div class="oe_title">
+                        <label for="model_name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="model_name" placeholder="e.g. Model S" options="{'no_create_edit': True}"/>
+                        </h1>
+                         <label for="make_name" class="oe_edit_only"/>
+                        <h2>
+                            <field name="make_name" class="oe_inline" placeholder="e.g. Make S" options="{'no_create_edit': True}"/>
+                        </h2>
+                        <label for="plate_number" class="oe_edit_only"/>
+                        <h2>
+                            <field name="plate_number" class="oe_inline" placeholder="e.g. PAE 326"/>
+                        </h2>
+                        <label for="tags_name" class="oe_edit_only"/>
+                        <field name="tags_name" options="{'color_field': 'color', 'no_create_edit': True}"/>
+                    </div>
+                     <group col="2" string="General Properties">
+                        <group>
+                            <field name="driver_id" />
+                            <field name="registration_start_date" />
+                            <field name="enginee_number" />
+                            <field name="model_year"/>
+                        </group>
+                        <group>
+                            <field name="vehicles_type"/>
+                            <field name="registration_end_date"/>
+                            <field name="vehicles_mileage"/>
+                            <field name="fuel_reading"/>
+                        </group>
+                     </group>
+                     <group col="2">
+                        <group string="Additional Properties">
+                            <field name="seats"/>
+                            <field name="doors"/>
+                            <field name="color"/>
+                            <field name="level"/>
+                        </group>
+                        <group string="Engine Options">
+                            <field name="tracking"/>
+                            <field name="transmission"/>
+                            <field name="fuel_type"/>
+                            <field name="mileage_reading"/>
+                            <field name="state"/>
+                        </group>
+                     </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="fleet_vehicle_template_kanban_view" model="ir.ui.view">
+        <field name="name">fleet.vehicle.details.kanban</field>
+        <field name="model">fleet.vehicle.details</field>
+        <field name="arch" type="xml">
+        <kanban>
+            <field name="image" modifiers="{}"/>
+            <field name="id"/>
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_global_click">
+                        <div class="o_kanban_image">
+                            <img t-att-src="kanban_image('fleet.vehicle.details', 'image', record.id.value)"/>
+                        </div>
+                        <div class="oe_kanban_details">
+                        <strong>
+                            <field name="model_name"/>
+                            <field name="vehicles_type"/><br/>
+                            <ul>
+                                <li>Plate Number: <field name="plate_number"/></li>
+                                <li>Reg Start Date: <field name="registration_start_date"/></li>
+                                <li>Reg End Date: <field name="registration_end_date"/></li>
+                                <li>Driver Assigned: <field name="driver_id"/></li>
+                            </ul>
+                        </strong>
+                        </div>
+                         <field name="level"/>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_view_fleet_vehicle">
+        <field name="name">Vehicle Details</field>
+        <field name="res_model">fleet.vehicle.details</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{'group_by':['level']}</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create new vehicle now...
+            </p>
+        </field>
+    </record>
+    
+    <menuitem id="fleet_vehicle" 
+              name="OLIB FLEET"
+              web_icon="olib_fleet,static/description/logo.png"
+              sequence="1"
+              groups="olib_fleet.group_security"
+              />
+
+    <menuitem id="vehicle_details"
+              name="Vehicle Details" 
+              parent="fleet_vehicle"
+              action="action_view_fleet_vehicle"
+              sequence="1"
+              groups="olib_fleet.group_security"
+              />
+</odoo>

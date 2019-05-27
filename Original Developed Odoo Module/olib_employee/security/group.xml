@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<record id="olib_employee.group_security" model="res.groups">
+      <field name="name">OLIB Employees</field>
+    </record>
+</odoo>
